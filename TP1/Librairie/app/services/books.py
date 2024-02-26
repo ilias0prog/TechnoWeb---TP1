@@ -1,33 +1,44 @@
 from app.schemas.books import Book
-from app.database import database
-
-def add_book(new_book: Book) -> Book:
-    database["books"].append(new_book)
-    return new_book
+from app.database import bookstore
 
 
 def get_all_books() -> list[Book]:
-    books_data = database["tasks"]
+    books_data = bookstore["tasks"]
     books = [Book.model_validate(data) for data in books_data]
     return books
 
 
-def update_book():
-    a = 0
-
-def delete_book():
-
-
-
-
-
-def get_task_by_id(task_id: str) -> Task | None:
-    selected_task = [
-        task for task in database["tasks"]
-        if task["id"] == task_id
+def get_book_by_id(book_id: str) -> Book | None:
+    selected_book = [
+        book for book in bookstore["books"]
+        if book["id"] == book_id
     ]
-    if len(selected_task) < 1:
+    if len(selected_book) < 1:
         return None
-    selected_task = Task.model_validate(selected_task[0])
-    return selected_task
+    selected_book = Book.model_validate(selected_book[0])
+    return selected_book
+
+def save_book(new_book: Book) -> Book:
+    bookstore["books"].append(new_book)
+    return new_book
+
+def delete_book(book_id):
+    bookstore["books"] = [
+        book for book in bookstore["books"]
+        if not (book["id"] == book_id)
+    ]
+
+# TODO: Implement update functionality
+
+def update_book(book_id, updated_fields: dict):
+    # Find the book to be updated by its id 
+    target_book = get_book_by_id(book_id)
     
+    # Merge the updates into the target book's fields
+    for key in updated_fields.keys():
+        target_book[key] = updated_fields[key]
+        
+    # Save the updated book back into the database
+    save_book(target_book)  
+    
+    return target_book
