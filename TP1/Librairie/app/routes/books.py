@@ -100,9 +100,7 @@ def update_book(id, name: str = None, author: str = None, editor: str = None) ->
     }
     service.update_book(updated_fields)
     return JSONResponse(content={"message": "Book updated successfully", "data": updated_fields})
-# je peux utiliser copilot pour ecrire les spe du code
-# ouais vasy mais change avec tes mots pour que ca soit crédibe
-#ok 
+
 
 @router.post('/')
 def delete_book(id : str) -> JSONResponse:
