@@ -44,7 +44,7 @@ def delete_book_data(book_id):
     
     return target_book"""
 
-def update_book(book_id, updated_fields: dict):
+def update_book_data(book_id, updated_fields: dict):
     # Find the book to be updated by its id
     target_book = get_book_by_id(book_id)
     
