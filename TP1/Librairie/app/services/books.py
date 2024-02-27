@@ -7,6 +7,11 @@ def get_all_books() -> list[Book]:
     books = [Book.model_validate(data) for data in books_data]
     return books
 
+def spacebars_only(text: str) -> bool:
+    """Check if a string contains only spaces"""
+    t = text.strip()
+    return (len(t)<=0)
+
 
 def get_book_by_id(book_id: str) -> Book | None:
     selected_book = [
