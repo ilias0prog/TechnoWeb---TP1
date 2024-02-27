@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 from app.schemas import books
-import Librairie.app.services.books as service
+import app.services.books as service
 
 # Define the router for books
 router = APIRouter(prefix="/books", tags=["Books"])
