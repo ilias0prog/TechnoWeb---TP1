@@ -2,10 +2,10 @@ from app.schemas.books import Book
 from app.database import bookstore
 
 
-"""def get_all_books() -> list[Book]:
+def get_all_books() -> list[Book]:
     books_data = bookstore["tasks"]
     books = [Book.model_validate(data) for data in books_data]
-    return books"""
+    return books
 
 def spacebars_only(text: str) -> bool:
     """Check if a string contains only spaces"""

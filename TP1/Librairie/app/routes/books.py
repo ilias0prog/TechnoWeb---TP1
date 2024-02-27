@@ -98,7 +98,7 @@ def update_book(id, name: str = None, author: str = None, editor: str = None) ->
         "author": author,
         "editor": editor
     }
-    service.update_book(updated_fields)
+    service.update_book_data(updated_fields)
     return JSONResponse(content={"message": "Book updated successfully", "data": updated_fields})
 
 
@@ -122,5 +122,5 @@ def delete_book(id : str) -> JSONResponse:
         status_code=status.HTTP_404_NOT_FOUND,
         detail="The book with the given id does not exist."
     )
-    service.delete_book(id)
+    service.delete_book_data(id)
     return JSONResponse(content={"message": "Successfully deleted book", "data": book})
