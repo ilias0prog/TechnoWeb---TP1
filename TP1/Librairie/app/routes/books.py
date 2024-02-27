@@ -111,6 +111,8 @@ def delete_book(id : str) -> JSONResponse:
 
     Args:
         id (str): The id of the book to be deleted.
+    Raises:
+        HTTPException: If the book with the given ID does not exist.
 
     Returns:
         JSONResponse: A JSON response indicating the success of the deletion operation.
