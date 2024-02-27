@@ -2,10 +2,10 @@ from app.schemas.books import Book
 from app.database import bookstore
 
 
-def get_all_books() -> list[Book]:
+"""def get_all_books() -> list[Book]:
     books_data = bookstore["tasks"]
     books = [Book.model_validate(data) for data in books_data]
-    return books
+    return books"""
 
 
 def get_book_by_id(book_id: str) -> Book | None:
@@ -22,7 +22,8 @@ def save_book(new_book: Book) -> Book:
     bookstore["books"].append(new_book)
     return new_book
 
-def delete_book(book_id):
+
+def delete_book_data(book_id):
     bookstore["books"] = [
         book for book in bookstore["books"]
         if not (book["id"] == book_id)
@@ -30,7 +31,7 @@ def delete_book(book_id):
 
 # TODO: Implement update functionality
 
-def update_book(book_id, updated_fields: dict):
+"""def update_book(book_id, updated_fields: dict):
     # Find the book to be updated by its id 
     target_book = get_book_by_id(book_id)
     
@@ -41,4 +42,25 @@ def update_book(book_id, updated_fields: dict):
     # Save the updated book back into the database
     save_book(target_book)  
     
-    return target_book
+    return target_book"""
+
+def update_book(book_id, updated_fields: dict):
+    # Find the book to be updated by its id
+    target_book = get_book_by_id(book_id)
+    
+    # If the book is found, update it with the new values
+    if target_book is not None:
+        # Merge the updates into the target book's fields
+        for key in updated_fields.keys():
+            target_book[key] = updated_fields[key]
+        
+        # Find the index of the updated book in the 'bookstore["books"]' list
+        book_index = bookstore["books"].index(target_book)
+        
+        # Save the updated book back into the database
+        bookstore["books"][book_index] = target_book
+        
+        # Return the updated book object
+        return Book.model_validate(target_book)
+    else:
+        return None
