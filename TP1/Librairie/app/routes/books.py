@@ -10,7 +10,7 @@ import app.services.books as service
 router = APIRouter(prefix="/books", tags=["Books"])
 
 # Define a GET route to retrieve all books
-@router.get('/get/all/books')
+@router.get('/list')
 def get_all_books():
     """
     Retrieve all books.
@@ -20,12 +20,12 @@ def get_all_books():
     """
     books = service.get_all_books()
     return JSONResponse(
-        content=[book.model_dump() for book in books],
+        content={"books":[book.model_dump() for book in books]},
         status_code=200,
     )
 
 
-@router.post('/')
+@router.post('/add{name}/{author}/{editor}')
 def add_book(name: str, author: str, editor: str) -> JSONResponse:
     """
     Adds a new book to the library.
@@ -62,7 +62,7 @@ def add_book(name: str, author: str, editor: str) -> JSONResponse:
     return JSONResponse(new_book.model_dump())
 
 
-@router.post('/')
+@router.post('/update/{id}')
 def update_book(id, name: str = None, author: str = None, editor: str = None) -> JSONResponse:
     """
     Update a book with the given ID.
@@ -102,7 +102,7 @@ def update_book(id, name: str = None, author: str = None, editor: str = None) ->
     return JSONResponse(content={"message": "Book updated successfully", "data": updated_fields})
 
 
-@router.post('/')
+@router.post('/delete/{id}')
 def delete_book(id : str) -> JSONResponse:
     """
     Deletes a book with the given id from the library.
