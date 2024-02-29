@@ -3,17 +3,40 @@ from app.database import bookstore
 
 
 def get_all_books() -> list[Book]:
+    """
+    Retrieves all books from the bookstore.
+
+    Returns:
+        list[Book]: A list of book objects.
+    """
     books_data = bookstore["tasks"]
     books = [Book.model_validate(data) for data in books_data]
     return books
 
 def spacebars_only(text: str) -> bool:
-    """Check if a string contains only spaces"""
+    """
+    Checks if a string contains only spaces.
+
+    Args:
+        text (str): The string to check.
+
+    Returns:
+        bool: True if the string contains only spaces, False otherwise.
+    """
     t = text.strip()
-    return (len(t)<=0)
+    return (len(t) <= 0)
 
 
 def get_book_by_id(book_id: str) -> Book | None:
+    """
+    Retrieves a book from the bookstore by its ID.
+
+    Args:
+        book_id (str): The ID of the book to retrieve.
+
+    Returns:
+        Book | None: The book object if found, None otherwise.
+    """
     selected_book = [
         book for book in bookstore["books"]
         if book["id"] == book_id
@@ -24,11 +47,29 @@ def get_book_by_id(book_id: str) -> Book | None:
     return selected_book
 
 def save_book(new_book: Book) -> Book:
+    """
+    Saves a new book to the bookstore.
+
+    Args:
+        new_book (Book): The book object to be saved.
+
+    Returns:
+        Book: The saved book object.
+    """
     bookstore["books"].append(new_book)
     return new_book
 
 
 def delete_book_data(book_id):
+    """
+    Supprime un livre de la librairie en fonction de son ID.
+
+    Args:
+        book_id (str): L'ID du livre à supprimer.
+
+    Returns:
+        None
+    """
     bookstore["books"] = [
         book for book in bookstore["books"]
         if not (book["id"] == book_id)
@@ -49,23 +90,27 @@ def delete_book_data(book_id):
     
     return target_book"""
 
-def update_book_data(book_id, updated_fields: dict):
-    # Find the book to be updated by its id
+def update_book_data(book_id, updated_fields: dict) -> Book | None:
+    """
+    Updates the fields of a book in the bookstore.
+
+    Args:
+        book_id (str): The ID of the book to update.
+        updated_fields (dict): A dictionary containing the updated fields and their values.
+
+    Returns:
+        Book | None: The updated book object if found and updated successfully, None otherwise.
+    """
+    
     target_book = get_book_by_id(book_id)
     
-    # If the book is found, update it with the new values
     if target_book is not None:
-        # Merge the updates into the target book's fields
         for key in updated_fields.keys():
             target_book[key] = updated_fields[key]
         
-        # Find the index of the updated book in the 'bookstore["books"]' list
         book_index = bookstore["books"].index(target_book)
-        
-        # Save the updated book back into the database
         bookstore["books"][book_index] = target_book
         
-        # Return the updated book object
         return Book.model_validate(target_book)
     else:
         return None
