@@ -9,22 +9,9 @@ def get_all_books() -> list[Book]:
     Returns:
         list[Book]: A list of book objects.
     """
-    books_data = bookstore["tasks"]
+    books_data = bookstore["books"]
     books = [Book.model_validate(data) for data in books_data]
     return books
-
-def spacebars_only(text: str) -> bool:
-    """
-    Checks if a string contains only spaces.
-
-    Args:
-        text (str): The string to check.
-
-    Returns:
-        bool: True if the string contains only spaces, False otherwise.
-    """
-    t = text.strip()
-    return (len(t) <= 0)
 
 def check_input_validity(*args):
     """

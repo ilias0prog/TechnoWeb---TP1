@@ -10,7 +10,7 @@ import app.services.books as service
 router = APIRouter(prefix="/books", tags=["Books"])
 
 # Define a GET route to retrieve all books
-@router.get('/')
+@router.get('/get/all/books')
 def get_all_books():
     """
     Retrieve all books.
