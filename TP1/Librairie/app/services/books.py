@@ -12,7 +12,17 @@ def spacebars_only(text: str) -> bool:
     t = text.strip()
     return (len(t)<=0)
 
-
+def check_input_validity(*args):
+    for input in args:
+        # Check if empty string :
+        if len(input) < 1:
+            raise ValueError("All the fields must be filled")
+        # Check if only spacebars :
+        i = input.strip()
+        if len(i) < 1:
+            raise ValueError("Please provide real title, author and editor")
+    return
+    
 def get_book_by_id(book_id: str) -> Book | None:
     selected_book = [
         book for book in bookstore["books"]
@@ -24,6 +34,7 @@ def get_book_by_id(book_id: str) -> Book | None:
     return selected_book
 
 def save_book(new_book: Book) -> Book:
+    # 2 books can have the same title, author or edithor but not all at once
     bookstore["books"].append(new_book)
     return new_book
 
@@ -34,7 +45,6 @@ def delete_book_data(book_id):
         if not (book["id"] == book_id)
     ]
 
-# TODO: Implement update functionality
 
 """def update_book(book_id, updated_fields: dict):
     # Find the book to be updated by its id 

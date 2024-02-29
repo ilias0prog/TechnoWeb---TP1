@@ -1,6 +1,5 @@
 from uuid import uuid4
 bookstore = {
-    # Clé = isbn de forme ""
     "books" : 
         [
     {

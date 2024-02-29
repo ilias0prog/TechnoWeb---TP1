@@ -80,6 +80,8 @@ def update_book(id, name: str = None, author: str = None, editor: str = None) ->
         HTTPException: If the book with the given ID does not exist.
         ValueError: If no fields are provided to update or if any field is filled with spaces only.
     """
+    if (name,author,editor) == (None,None,None):
+        raise ValueError("At least one of the fields (name/author/editor) should be provided for updating.")
     try:
         book = service.get_book_by_id(id)
     except:
@@ -89,9 +91,7 @@ def update_book(id, name: str = None, author: str = None, editor: str = None) ->
         )    
     if (name is None and author is None and editor is None):
         raise ValueError("At least one field must be provided to update.")
-    
-    if service.spacebars_only(name, author, editor):
-        raise ValueError("No field can be filled with spaces only.")  
+    service.check_input_validity(name,author,editor)  
     updated_fields = {
         "id" : id,
         "name": name,
