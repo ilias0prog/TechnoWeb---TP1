@@ -26,7 +26,29 @@ def spacebars_only(text: str) -> bool:
     t = text.strip()
     return (len(t) <= 0)
 
+def check_input_validity(*args):
+    """
+    Checks the validity of input fields.
 
+    Args:
+        *args: Variable number of input fields to check.
+
+    Raises:
+        ValueError: If any of the input fields is empty or contains only spaces.
+
+    Returns:
+        None
+    """
+    for input in args:
+        # Check if empty string :
+        if len(input) < 1:
+            raise ValueError("All the fields must be filled")
+        # Check if only spacebars :
+        i = input.strip()
+        if len(i) < 1:
+            raise ValueError("Please provide real title, author and editor")
+    return
+    
 def get_book_by_id(book_id: str) -> Book | None:
     """
     Retrieves a book from the bookstore by its ID.
@@ -51,7 +73,7 @@ def save_book(new_book: Book) -> Book:
     Saves a new book to the bookstore.
 
     Args:
-        new_book (Book): The book object to be saved.
+        new_book (Book): The book object to save.
 
     Returns:
         Book: The saved book object.
@@ -62,10 +84,10 @@ def save_book(new_book: Book) -> Book:
 
 def delete_book_data(book_id):
     """
-    Supprime un livre de la librairie en fonction de son ID.
+    Deletes a book from the bookstore based on its ID.
 
     Args:
-        book_id (str): L'ID du livre à supprimer.
+        book_id (str): The ID of the book to delete.
 
     Returns:
         None
@@ -75,20 +97,6 @@ def delete_book_data(book_id):
         if not (book["id"] == book_id)
     ]
 
-# TODO: Implement update functionality
-
-"""def update_book(book_id, updated_fields: dict):
-    # Find the book to be updated by its id 
-    target_book = get_book_by_id(book_id)
-    
-    # Merge the updates into the target book's fields
-    for key in updated_fields.keys():
-        target_book[key] = updated_fields[key]
-        
-    # Save the updated book back into the database
-    save_book(target_book)  
-    
-    return target_book"""
 
 def update_book_data(book_id, updated_fields: dict) -> Book | None:
     """
@@ -101,7 +109,6 @@ def update_book_data(book_id, updated_fields: dict) -> Book | None:
     Returns:
         Book | None: The updated book object if found and updated successfully, None otherwise.
     """
-    
     target_book = get_book_by_id(book_id)
     
     if target_book is not None:
