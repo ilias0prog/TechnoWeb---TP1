@@ -51,7 +51,7 @@ def add_book(name: str, author: str, editor: str) -> JSONResponse:
         "editor": editor,
     }     
     try:
-        new_book = books.BaseModel(new_book_data)
+        new_book = books.Book(**new_book_data)
           
     except ValidationError as e:
         raise HTTPException(
@@ -59,8 +59,7 @@ def add_book(name: str, author: str, editor: str) -> JSONResponse:
             detail=e.errors(),
         )
     service.save_book(new_book)  # Save the validated book
-    return JSONResponse(new_book.model_dump())
-
+    return JSONResponse(content=new_book.dict(), status_code=201)
 
 @router.post('/update/{id}')
 def update_book(id, name: str = None, author: str = None, editor: str = None) -> JSONResponse:
