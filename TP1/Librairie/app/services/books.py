@@ -96,12 +96,9 @@ def update_book_data(book_id, updated_fields: dict) -> Book | None:
     target_book = get_book_by_id(book_id)
     
     if target_book is not None:
-        for key in updated_fields.keys():
-            target_book[key] = updated_fields[key]
+        for key, value in updated_fields.items():
+            setattr(target_book, key, value)
         
-        book_index = bookstore["books"].index(target_book)
-        bookstore["books"][book_index] = target_book
-        
-        return Book.model_validate(target_book)
+        return target_book
     else:
         return None

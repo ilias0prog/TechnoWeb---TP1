@@ -61,13 +61,13 @@ def add_book(name: str, author: str, editor: str) -> JSONResponse:
     service.save_book(new_book)  # Save the validated book
     return JSONResponse(content=new_book.dict(), status_code=201)
 
-@router.post('/update/{id}')
-def update_book(id, name: str = None, author: str = None, editor: str = None) -> JSONResponse:
+@router.put('/update/{id}')
+def update_book(id: str, name: str = None, author: str = None, editor: str = None) -> JSONResponse:
     """
     Update a book with the given ID.
 
     Args:
-        id (int): The ID of the book to update.
+        id (str): The ID of the book to update.
         name (str, optional): The new name of the book. Defaults to None.
         author (str, optional): The new author of the book. Defaults to None.
         editor (str, optional): The new editor of the book. Defaults to None.
@@ -79,25 +79,25 @@ def update_book(id, name: str = None, author: str = None, editor: str = None) ->
         HTTPException: If the book with the given ID does not exist.
         ValueError: If no fields are provided to update or if any field is filled with spaces only.
     """
-    if (name,author,editor) == (None,None,None):
-        raise ValueError("At least one of the fields (name/author/editor) should be provided for updating.")
     try:
         book = service.get_book_by_id(id)
     except:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="The book with the given id does not exist."
-        )    
-    if (name is None and author is None and editor is None):
+        )
+
+    if all(field is None for field in [name, author, editor]):
         raise ValueError("At least one field must be provided to update.")
-    service.check_input_validity(name,author,editor)  
+
     updated_fields = {
-        "id" : id,
-        "name": name,
-        "author": author,
-        "editor": editor
+        "id": id,
+        "name": name,  
+        "author": author,  
+        "editor": editor, 
     }
-    service.update_book_data(updated_fields)
+    
+    service.update_book_data(id,updated_fields)
     return JSONResponse(content={"message": "Book updated successfully", "data": updated_fields})
 
 
