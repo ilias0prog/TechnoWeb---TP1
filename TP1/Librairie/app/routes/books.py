@@ -101,13 +101,14 @@ def update_book(id, name: str = None, author: str = None, editor: str = None) ->
     return JSONResponse(content={"message": "Book updated successfully", "data": updated_fields})
 
 
-@router.post('/delete/{id}')
-def delete_book(id : str) -> JSONResponse:
+@router.delete('/delete/{id}')
+def delete_book(id: str) -> JSONResponse:
     """
     Deletes a book with the given id from the library.
 
     Args:
         id (str): The id of the book to be deleted.
+    
     Raises:
         HTTPException: If the book with the given ID does not exist.
 
@@ -118,8 +119,8 @@ def delete_book(id : str) -> JSONResponse:
         book = service.get_book_by_id(id)
     except:
         raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="The book with the given id does not exist."
-    )
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The book with the given id does not exist."
+        )
     service.delete_book_data(id)
-    return JSONResponse(content={"message": "Successfully deleted book", "data": book})
+    return JSONResponse(content={"message": "Successfully deleted book", "data": book.dict()})

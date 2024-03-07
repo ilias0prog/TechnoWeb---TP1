@@ -46,14 +46,11 @@ def get_book_by_id(book_id: str) -> Book | None:
     Returns:
         Book | None: The book object if found, None otherwise.
     """
-    selected_book = [
-        book for book in bookstore["books"]
-        if book["id"] == book_id
-    ]
-    if len(selected_book) < 1:
+    selected_book = next((book for book in bookstore["books"] if book["id"] == book_id), None)
+    if selected_book is not None:
+        return Book.model_validate(selected_book)
+    else:
         return None
-    selected_book = Book.model_validate(selected_book[0])
-    return selected_book
 
 def save_book(new_book: Book) -> Book:
     """
